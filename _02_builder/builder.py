@@ -64,7 +64,8 @@ class ConcreteBuilder1(Builder):
       
 class Direction():
     """
-    负责特定的顺序来建造production的类
+    负责特定的顺序来建造production的类.
+    可以省略，在客户端代码中直接调用direction中创建不同产品种类的函数 builder_minimal_feature_production builder_full_feature_production
     """
     def __init__(self) -> None:
         self.builder = None
