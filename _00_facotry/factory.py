@@ -36,6 +36,7 @@ class factory_1(abstractFactory):
     def __init__(self) -> None:
         super().__init__()
         
+    # 实现抽象类
     def makeProduct(self):
         return f1Production()           # 返回产品实例
     
