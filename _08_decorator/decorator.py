@@ -1,3 +1,4 @@
+# 装饰者模式类似与流水线
 from abc import ABCMeta, abstractmethod
 
 

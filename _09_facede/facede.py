@@ -1,4 +1,4 @@
-# 装饰者模式类似与python和c++中封装，更规范
+# 外观模式类似与python和c++中封装，更规范
 
 class Equipment(object):
  

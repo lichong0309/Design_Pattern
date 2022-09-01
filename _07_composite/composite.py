@@ -1,3 +1,4 @@
+# 组合模式类似于一个tree型结构
 
 # 抽象一个组织类
 class Component(object):
