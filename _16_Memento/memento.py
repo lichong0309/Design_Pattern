@@ -1,31 +1,29 @@
-# 备忘录类
+class Originator(object):
+    
+    def __init__(self, state):
+        self.state = state
+
+    def create_memento(self):
+        return Memento(self.state)
+
+    def set_memento(self, memento):
+        self.state = memento.state
+
+    def show(self):
+        print("当前状态 ", self.state)
+
+
+# 备忘录
 class Memento(object):
 
     def __init__(self, state):
         self.state = state
-        
-
-class Originator(object):
-
-    def __init__(self, state):
-        self.state = state
-
-    # 记录状态
-    def create_memento(self):
-        return Memento(self.state)
-
-    # 可复原状态
-    def set_memento(self, memento:Memento):
-        self.state = memento.state
-
-    def show(self):
-        print ("当前状态 ", self.state)
 
 
-# 管理者类
+# 管理者
 class Caretaker(object):
 
-    def __init__(self,memento:Memento):
+    def __init__(self, memento):
         self.memento = memento
 
 
