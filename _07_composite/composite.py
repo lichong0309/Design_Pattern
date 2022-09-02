@@ -1,80 +1,55 @@
-# 组合模式类似于一个tree型结构
 
-# 抽象一个组织类
+
 class Component(object):
+    def __init__(self, node_name):
+        self.node_name = node_name
 
-    def __init__(self, name):
-        self.name = name
-
-    def add(self,comp):
+    def process(self):
         pass
 
-    def remove(self,comp):
-        pass
 
-    def display(self, depth):
-        pass
+class TreeNode(Component):
 
-# 叶子节点
-class Leaf(Component):
+    def __init__(self, node_name):
+        super(TreeNode, self).__init__(node_name)
+        self.node_list = []
 
-    def add(self,comp):
-        print ('不能添加下级节点')
+    def process(self):
+        self._process_cur_node()
+        self._process_sub_node()
 
-    def remove(self,comp):
-        print ('不能删除下级节点')
+    def add_node(self, node):
+        self.node_list.append(node)
 
-    def display(self, depth):
-        strtemp = ''
-        for i in range(depth):
-            strtemp += strtemp+'-'
-        print (strtemp+self.name)
+    def remove_node(self, node):
+        self.node_list.pop(node)
+
+    def _process_cur_node(self):
+        print('process cur node:', self.node_name)
+
+    def _process_sub_node(self):
+        for sub_node in self.node_list:
+            sub_node.process()
 
 
-# 枝节点
-class Composite(Component):
+class LeafNode(Component):
 
-    def __init__(self, name):
-        self.name = name
-        self.children = []
+    def process(self):
+        print('process leaf node:', self.node_name)
 
-    def add(self,comp):
-        self.children.append(comp)
 
-    def remove(self,comp):
-        self.children.remove(comp)
+if __name__ == '__main__':
+    root_node = TreeNode('root')
+    tree_node1 = TreeNode('tree_node1')
+    tree_node2 = TreeNode('tree_node2')
+    tree_node3 = TreeNode('tree_node3')
+    leaf_node1 = LeafNode('leaf_node1')
+    leaf_node2 = LeafNode('leaf_node2')
 
-    def display(self, depth):
-        strtemp = ''
-        for i in range(depth):
-            strtemp += strtemp+'-'
-        print (strtemp+self.name)
-        for comp in self.children:
-            comp.display(depth+2)
+    root_node.add_node(tree_node1)
+    root_node.add_node(tree_node2)
+    tree_node1.add_node(tree_node3)
+    tree_node3.add_node(leaf_node1)
+    tree_node3.add_node(leaf_node2)
 
-if __name__ == "__main__":
-    #生成树根
-    root = Composite("root")
-    #根上长出2个叶子
-    root.add(Leaf('leaf A'))
-    root.add(Leaf('leaf B'))
-
-    #根上长出树枝Composite X
-    comp = Composite("Composite X")
-    comp.add(Leaf('leaf XA'))
-    comp.add(Leaf('leaf XB'))
-    root.add(comp)
-
-    #根上长出树枝Composite X
-    comp2 = Composite("Composite XY")
-    #Composite X长出2个叶子
-    comp2.add(Leaf('leaf XYA'))
-    comp2.add(Leaf('leaf XYB'))
-    root.add(comp2)
-    # 根上又长出2个叶子,C和D
-    root.add(Leaf('Leaf C'))
-    leaf = Leaf("Leaf D")
-    root.add(leaf)
-    root.remove(leaf)
-    #展示组织
-    root.display(1)
+    root_node.process()
