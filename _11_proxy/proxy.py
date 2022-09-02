@@ -1,46 +1,48 @@
 from abc import ABC, abstractmethod
 
 
-# 支付接口
-class Payment(ABC):
+class Subject(ABC):
     @abstractmethod
-    def do_pay(self):
+    def request(self) -> None:
         pass
 
 
-# 银行类：真实主题
-class Bank(Payment):
-    def check_account(self):
-        print("账户检查中...")
+class RealSubject(Subject):
+    def request(self) -> None:
+        print("RealSubject: Handling request.")
+
+
+class Proxy(Subject):
+    def __init__(self, real_subject: RealSubject) -> None:
+        self._real_subject = real_subject
+
+    def request(self) -> None:
+        if self.check_access():
+            self._real_subject.request()
+            self.log_access()
+
+    def check_access(self) -> bool:
+        print("Proxy: Checking access prior to firing a real request.")
         return True
 
-    def do_pay(self):
-        self.check_account()
-        print("银行结算完成")
+    def log_access(self) -> None:
+        print("Proxy: Logging the time of request.")
 
 
-# 银行类的代理
-class DebitCard(Payment):
-    def __init__(self):
-        self.bank = Bank()
-
-    def do_pay(self):
-        print("借记卡即将去银行支付")
-        self.bank.do_pay()
-        print("借记卡完成银行支付")
+def client_code(subject: Subject) -> None:
+    subject.request()
 
 
-# 客户端，没有权限做支付
-class Client(object):
-    def __init__(self):
-        self.debit_card = DebitCard()
 
-    def make_payment(self):
-        print("借记卡支付开始")
-        self.debit_card.do_pay()
-        print("借记卡支付结束")
+if __name__ == "__main__":
+    print("Client: Executing the client code with a real subject:")
+    real_subject = RealSubject()
+    client_code(real_subject)
+    
+    print("")
+    
+    print("Client: Executing the same client code with a proxy:")
+    proxy = Proxy(real_subject)
+    client_code(proxy)
 
 
-if __name__ == '__main__':
-    client = Client()
-    client.make_payment()
