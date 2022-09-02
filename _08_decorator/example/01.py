@@ -40,3 +40,4 @@ if __name__ == '__main__':
     # 添加一个花
     car.decorator(flower)
     print(car.ornamental)
+
